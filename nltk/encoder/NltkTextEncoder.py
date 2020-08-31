@@ -81,6 +81,39 @@ class NltkTextEncoder:
         self.removeCustom = removeCustom
         self.customExpression = customExpression
 
+    """
+    Function to remove HTML tags and email address
+    :param: record: text string
+    :return:  text: text string
+    """
+    def __remove_HTML(self,record):
+      cleaner = re.compile('<.*?>')
+      text = re.sub(cleaner, ' ', record)
+      text = re.sub(r'\S+@\S+', 'EmailId', text)
+      text = re.sub(r'\'', '', text)
+      return text
+   
+    """
+    Function to remove numbers
+    :param: record: text string
+    :return:  text: text string
+    """
+    def __remove_numbers(self,record):
+      text = re.sub(r'[0-9]', '', record)
+      text = re.sub(r'[^a-zA-Z]', ' ', text)
+      return text
+    
+    """
+    Function to custom regular expressions
+    :param: record: text string
+    :return:  text: text string
+    """
+    def __remove_custom(self,record):
+      cleaner = re.compile(self.customExpression)
+      text = re.sub(cleaner, ' ', record)
+      return text
+
+
     def fit_transform(self,dataFeature):
         
         nltk.download('wordnet')
@@ -114,24 +147,19 @@ class NltkTextEncoder:
             
             #To Remove HTML tags and email addresses
             if self.removeHTML:
-              cleaner = re.compile('<.*?>')
-              record = re.sub(cleaner, ' ', record)
-              record = re.sub(r'\S+@\S+', 'EmailId', record)
-              record = re.sub(r'\'', '', record)
+              record= self.__remove_HTML(record)
             else:
               pass
             
             #To remove numerical values
             if self.removeNumericals:
-              record = re.sub(r'[0-9]', '', record)
-              record = re.sub(r'[^a-zA-Z]', ' ', record)
+              record= self.__remove_numbers(record)
             else:
               pass
             
             #To remove custom regular expressions
             if self.removeCustom:
-              cleaner = re.compile(self.customExpression)
-              record = re.sub(cleaner, ' ', record)
+              record= self.__remove_custom(record)
             else:
               pass
             
@@ -176,4 +204,3 @@ class NltkTextEncoder:
           pass 
         
         return pd.DataFrame(output)
-
