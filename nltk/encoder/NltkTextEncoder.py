@@ -13,7 +13,7 @@ class NltkTextEncoder:
     Natural Language Tool Kit Based Encoder
     
     Given a series of text, the encoder encodes the text to form a dataframe of text vectors and has the capability to perform 
-    WordNet Lematizer, padding, remove stopwords, HTML tags, email addresses, numericals and custom regualr expressions. 
+    WordNet Lemmatizer, padding, remove stopwords, HTML tags, email addresses, numericals and custom regular expressions. 
     
     Parameters
     ----------
